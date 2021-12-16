@@ -43,6 +43,8 @@ public class Desk {
 
     private Long update_by;
 
+    private boolean isEmpty = true;
+
     private boolean isDeleted = false;
 
     @JsonIgnore

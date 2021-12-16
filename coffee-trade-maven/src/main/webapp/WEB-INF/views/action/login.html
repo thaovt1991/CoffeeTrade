@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <th:block th:replace="/layout/head:: head" />
+  <title>Menu</title>
+</head>
+<body>
+<th:block th:replace="/layout/nav-bar-manager :: nav-bar" />
+
+<div style="background-color: white; width: 100%">
+   <div class="container-fluid">
+     <div class="row">
+       <div id="showTable" >
+          day la ca ban
+       </div>
+     </div>
+     <div class="row">
+       <div class="col-md-8" id="showMenu" style="background-color: #4cae4c">
+        day la show list
+       </div>
+       <div class="col-md-4" id="showOder" style="background-color: yellow">
+             show oder
+       </div>
+     </div>
+
+
+   </div>
+</div>
+
+<th:block th:replace="/layout/footer::footer"></th:block>
+
+<th:block th:replace="/layout/script :: scriptAll" />
+</body>
+</html>

@@ -123,15 +123,15 @@ public class AppConfig implements WebMvcConfigurer, ApplicationContextAware {
 //        registry.addFormatter(new CustomerFormatter(applicationContext.getBean(CustomerService.class)));
 //    }
 
-//    @Value("${file-upload}")
-//    private String fileUpload  ;
+    @Value("${file-upload}")
+    private String fileUpload  ;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry){
         registry.addResourceHandler("/assets/**").addResourceLocations("/assets/") ;
 //        registry.addResourceHandler("/image/**").addResourceLocations("/image/") ;
-//        registry.addResourceHandler("/image/**")
-//                .addResourceLocations("file:" + fileUpload);
+        registry.addResourceHandler("/image/**")
+                .addResourceLocations("file:" + fileUpload);
     }
 
     //Cấu hình upload file
@@ -142,13 +142,13 @@ public class AppConfig implements WebMvcConfigurer, ApplicationContextAware {
 //    }
 
 
-    //add thu vien maven upload file
-//    @Bean(name = "multipartResolver")
-//    public CommonsMultipartResolver getResolver() throws IOException {
-//        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-//        resolver.setMaxUploadSizePerFile(52428800);  //6,25MB
-//        return resolver;
-//    }
+  //  add thu vien maven upload file
+    @Bean(name = "multipartResolver")
+    public CommonsMultipartResolver getResolver() throws IOException {
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+        resolver.setMaxUploadSizePerFile(52428800);  //6,25MB
+        return resolver;
+    }
 
 
 }

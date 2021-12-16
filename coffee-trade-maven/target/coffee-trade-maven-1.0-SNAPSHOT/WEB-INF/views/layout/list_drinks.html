@@ -1,0 +1,24 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<th:block th:fragment="list-drinks">
+    <textarea style="display:none" id="tempDrinks">
+        <tr id="tr_{0}">
+            <td class="text-center">{0}</td>
+            <td><img width="100" height="100" src="image/{1}" alt=""></td>
+            <td>{2}</td>
+            <td>{3}</td>
+            <td>{4}</td>
+            <td >{5}</td>
+            <td class="text-center">
+                <a class="btn btn-outline-secondary edit" title="Edit" data-toggle="tooltip" data-id="{0}">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </a>
+            </td>
+            <td class="text-center">
+                <a class="btn btn-outline-danger suspended" title="Suspended" data-toggle="tooltip" data-id="{0}" >
+                    <i class="fa fa-ban" aria-hidden="true"></i>
+                </a>
+            </td>
+        </tr>
+    </textarea>
+</th:block>

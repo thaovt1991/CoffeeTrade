@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <th:block th:replace="/layout/head:: head"/>
+    <title>Menu</title>
+</head>
+<body>
+<th:block th:replace="/layout/nav-bar-manager :: nav-bar"/>
+
+<div style="background-color: white; width: 100%">
+    <div class="container-fluid">
+        <div class="box-body">
+
+            <th:block th:replace="/layout/list_drinks :: list_drinks"/>
+
+            <input type="hidden" id="currentRow"/>
+
+            <table id="tbListDrinks" class="table table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Image</th>
+                    <th>Name Drinks</th>
+                    <th>Type</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--            <tr th:each="dr : ${drinksList}">-->
+                <!--                <td th:text="${dr.name}"></td>-->
+                <!--                <td th:text="${dr.description}"></td>-->
+                <!--                <td><img width="100" height="100" th:src="@{'/image/' + ${dr.image}}" alt=""></td>-->
+                <!--            </tr>-->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="/layout/footer::footer"></th:block>
+
+<th:block th:replace="/layout/script :: scriptAll"/>
+
+<script>
+    let drinks = new Drinks();
+
+    let tempDrinks = jQuery.validator.format($.trim($("#tempDrinks").val()));
+
+    let addRow = () => {
+        $("#tbListDrinks tbody").prepend($(tempDrinks(drinks.id, drinks.image, drinks.name, drinks.quantity, drinks.price, drinks.description)));
+    }
+
+    function getDrinksList() {
+        return $.ajax({
+            type: "GET",
+            url: "api/drinks",
+        }).done((data) => {
+            $.each(data, (index, item) => {
+                drinks = item;
+                addRow();
+            });
+        }).fail(function () {
+            // App.showErrorAlert("An error occurred. Please try again later !");
+            alert("An error occurred. Please try again later !")
+        });
+    }
+
+    $(function () {
+        getCustomers().then(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    });
+
+</script>
+</body>
+</html>
+

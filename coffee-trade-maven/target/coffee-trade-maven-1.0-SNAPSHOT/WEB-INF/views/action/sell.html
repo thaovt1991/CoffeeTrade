@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <th:block th:replace="/layout/head:: head"/>
+    <title>Menu</title>
+    <style>
+        .desk {
+            width: 100px;
+            height: 50px;
+            margin: 10px;
+            font-weight: bolder;
+        }
+
+        .desk:hover {
+            background-color: #4cae4c;
+        }
+
+        .nav-link.tab-menu {
+            font-weight: bolder;
+            font-size: 15px;
+        }
+
+        .showdrinks{
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            padding: 0px;
+            border: 1px solid black;
+        }
+       #show_sell{
+           background-image: url("/assets/img/table-set.png");
+       }
+    </style>
+</head>
+<body>
+<th:block th:replace="/layout/nav-bar-manager :: nav-bar"/>
+
+<div style="background-color: white; width: 100%">
+    <div class="container-fluid">
+
+        <div class="row">
+            <th:block th:each="desk: ${listDesks}">
+                <div class="col-md-1" style="float: left">
+                    <th:block th:if="${desk.isEmpty()}">
+                        <button class="desk" style="color: blue" th:data-id="${desk.id}"
+                                th:text="${desk.name}"></button>
+                    </th:block>
+                    <th:block th:if="${!desk.isEmpty()}">
+                        <button class="desk" style="color: red" th:data-id="${desk.id}"
+                                th:text="${desk.name}"></button>
+                    </th:block>
+                </div>
+            </th:block>
+        </div>
+        <div class="row" id="show_sell" style="height: 500px;">
+            <div class="col-md-8" id="showMenu" style="background-color: #4cae4c">
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+
+                        <button class="nav-link tab-menu active " id="all-type" data-bs-toggle="tab"
+                                data-bs-target="#nav-all-type" type="button" role="tab" aria-controls="nav-all-type"
+                                aria-selected="true">All
+                        </button>
+                        <th:block th:each="type : ${typeList}">
+                            <button class="nav-link tab-menu " th:id="${type.id}" data-bs-toggle="tab"
+                                    th:data-bs-target="'#nav'+${type.id}" type="button" role="tab"
+                                    th:aria-controls="'nav'+${type.id}" aria-selected="true"
+                                    th:text="${type.name}"></button>
+                        </th:block>
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active " id="nav-all-type" role="tabpanel"
+                         aria-labelledby="all-type">
+                        <div class="row">
+                            <th:block th:each="dr : ${listDrinksAll}">
+                                <div class="col-md-4 showdrinks" style="float: left;">
+                                    <img th:src="@{'/assets/img/'+ ${dr.image}}" style="width: 100%;height: 100%;margin-left: 0px">
+                                    <button class="add-order" th:data-id= "${dr.id}">Add</button>
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+                    <th:block th:each="type : ${typeList}">
+                        <div class="tab-pane fade " th:id="'nav'+${type.id}" role="tabpanel"
+                             th:aria-labelledby="${type.id}">
+                            <th:block th:each="dr : ${listDrinksAll}">
+                                <th:block th:if="${dr.type.id == type.id}">
+                                <div class="col-md-4 showdrinks" style="float: left;">
+                                    <img th:src="@{'/assets/img/'+ ${dr.image}}" style="width: 100%;height: 100%;">
+                                    <button id="add-order">Add</button>
+                                </div>
+                                </th:block>
+                            </th:block>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+            <div class="col-md-4" id="showOder" style="background-color: yellow">
+                <img src="/image/redbull.png" alt="">
+<!--            <div class="col-md-4" id="showOder" >-->
+               Chua chon ban
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<th:block th:replace="/layout/footer::footer"></th:block>
+
+<th:block th:replace="/layout/script :: scriptAll"/>
+</body>
+</html>
