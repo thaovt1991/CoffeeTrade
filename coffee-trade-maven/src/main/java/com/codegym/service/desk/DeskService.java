@@ -39,4 +39,14 @@ public class DeskService implements  IDeskService{
       desk.setDeleted(true);
       deskRepository.save(desk) ;
     }
+
+    @Override
+    public List<Desk> findAllByDeletedIsFalseAndEmptyIsFalse() {
+        return deskRepository.findAllByDeletedIsFalseAndEmptyIsFalse();
+    }
+
+    @Override
+    public List<Desk> findAllNotDeletedAndEmpty() {
+        return deskRepository.findAllNotDeletedAndEmpty();
+    }
 }

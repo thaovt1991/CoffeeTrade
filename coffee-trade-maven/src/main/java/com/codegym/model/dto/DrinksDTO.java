@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Accessors(chain = true)
 public class DrinksDTO {
+
     private long id ;
 
     private MultipartFile image ;

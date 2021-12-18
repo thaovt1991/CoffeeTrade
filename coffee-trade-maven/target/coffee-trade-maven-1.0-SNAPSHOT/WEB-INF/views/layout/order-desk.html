@@ -1,0 +1,69 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<th:block th:fragment="order-desk">
+    <form class="order-desk d-none" id="order">
+        <fieldset>
+            <legend>COFFEE DEMO</legend>
+            <div width="100%">
+                <label> Bàn: </label>
+                <span id="select_desk">
+                <select id="name_desk" name="name_desk">
+                    <th:block th:each="ds: ${listDesksEmpty}">
+                        <option th:data-id="${ds.id}" th:value="${ds.id}"><span th:text="${ds.name}"></span></option>
+                    </th:block>
+                </select>
+                </span>
+                <br>
+                <label>Ngày: <span id="day-order"></span></label>
+                <br>
+                <label>Giờ: <span id="time-order"></span></label>
+                <br>
+                <!--                    dựa vào user đăng nhập để add-->
+                <label> Nhân viên: </label>
+                <select id="name_staff" name="staff_order">
+                    <th:block th:each="st: ${staffList}">
+                        <option th:value="${st.id}"><span th:text="${st.fullName}"></span></option>
+                    </th:block>
+                </select>
+
+                <table width="100%" class="table table-bordered" border="1" id="tbListOrderDetails">
+                    <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên thức uống</th>
+                        <th>Số lượng</th>
+                        <th>Đơn giá</th>
+                        <th>Thành tiền (VND)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                    <tfoot>
+                    <tr style="font-weight: bolder">
+                        <td colspan="4">Tổng tiền :</td>
+                        <td id="total_money">0 VND</td>
+                    </tr>
+                    </tfoot>
+                </table>
+                <div class="row div-new-order" id="new-order">
+                    <div class="col-md-6" style="text-align: center">
+                        <button type="button" class="btn btn-outline-primary" id="done">Xong</button>
+                    </div>
+                    <div class="col-md-6" style="text-align: center">
+                        <button type="button" class="btn btn-outline-danger" id="cancel-order">Hủy</button>
+                    </div>
+                </div>
+                <div class="row div-old-order" id="old-order">
+                    <div class="col-md-6" style="text-align: center">
+                        <button type="button" class="btn btn-outline-warning" id="btn-edit-order">Sửa</button>
+                    </div>
+                    <div class="col-md-6" style="text-align: center">
+                        <button type="button" class="btn btn-outline-info" id="btn-total-money-order ">Tính tiền
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</th:block>

@@ -45,34 +45,6 @@
 <th:block th:replace="/layout/script :: scriptAll"/>
 
 <script>
-    let drinks = new Drinks();
-
-    let tempDrinks = jQuery.validator.format($.trim($("#tempDrinks").val()));
-
-    let addRow = () => {
-        $("#tbListDrinks tbody").prepend($(tempDrinks(drinks.id, drinks.image, drinks.name, drinks.quantity, drinks.price, drinks.description)));
-    }
-
-    function getDrinksList() {
-        return $.ajax({
-            type: "GET",
-            url: "api/drinks",
-        }).done((data) => {
-            $.each(data, (index, item) => {
-                drinks = item;
-                addRow();
-            });
-        }).fail(function () {
-            // App.showErrorAlert("An error occurred. Please try again later !");
-            alert("An error occurred. Please try again later !")
-        });
-    }
-
-    $(function () {
-        getCustomers().then(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    });
 
 </script>
 </body>

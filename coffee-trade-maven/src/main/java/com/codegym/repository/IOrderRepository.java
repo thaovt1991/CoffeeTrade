@@ -13,4 +13,10 @@ public interface IOrderRepository extends JpaRepository< Order, Long> {
 
     @Query(value = "select o from Order o where o.isDeleted = false")
     List<Order> findAllNotDeleted() ;
+
+
+    @Query(value = "select o from Order o where o.isDeleted = false and o.desk.id = ?1")
+    Order getOrderByDeskId(Long id) ;
+
+
 }

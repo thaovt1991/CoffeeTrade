@@ -1,6 +1,7 @@
 package com.codegym.service.order_detail;
 
 import com.codegym.model.OrderDetail;
+import com.codegym.model.dto.IOrderDetailSumDTO;
 import com.codegym.repository.IOrderDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,5 +40,15 @@ public class OrderDetailService implements IOrderDetailService{
       OrderDetail orderDetail = findById(id).get() ;
       orderDetail.setDeleted(true);
       save(orderDetail) ;
+    }
+
+    @Override
+    public List<OrderDetail> findOrderDetailByOrderId(Long id){
+        return orderDetailRepository.findOrderDetailByOrderId(id);
+    };
+
+    @Override
+    public List<IOrderDetailSumDTO> getAllIOrderDetailSumDTOByOrderId(Long id) {
+        return orderDetailRepository.getAllIOrderDetailSumDTOByOrderId(id);
     }
 }

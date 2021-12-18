@@ -41,5 +41,9 @@ public class OrderService implements IOrderService {
       save(order) ;
     }
 
+    @Override
+    public Order getOrderByDeskId(Long id){
+        return orderRepository.getOrderByDeskId(id) ;
+    };
 
 }

@@ -20,16 +20,27 @@
             font-size: 15px;
         }
 
-        .showdrinks{
+        .showdrinks {
             width: 100px;
-            height: 100px;
+            height: 130px;
             margin: 10px;
             padding: 0px;
-            border: 1px solid black;
+            /*border: 1px solid black;*/
         }
-       #show_sell{
-           background-image: url("/assets/img/table-set.png");
-       }
+
+        #show_sell {
+            background-image: url("/assets/img/table-set.png");
+        }
+
+        fieldset {
+            border: 4px solid blue;
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        legend {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -53,7 +64,7 @@
             </th:block>
         </div>
         <div class="row" id="show_sell" style="height: 500px;">
-            <div class="col-md-8" id="showMenu" style="background-color: #4cae4c">
+            <div class="col-md-6" id="showMenu" style="background-color: #4cae4c">
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
 
@@ -75,8 +86,10 @@
                         <div class="row">
                             <th:block th:each="dr : ${listDrinksAll}">
                                 <div class="col-md-4 showdrinks" style="float: left;">
-                                    <img th:src="@{'/assets/img/'+ ${dr.image}}" style="width: 100%;height: 100%;margin-left: 0px">
-                                    <button class="add-order" th:data-id= "${dr.id}">Add</button>
+                                    <img th:src="@{'/assets/img/'+ ${dr.image}}"
+                                         style="width: 100%;height: 100px;margin-left: 0px">
+                                    <p th:text="${dr.name}"></p>
+                                    <button class="add-drinks-to-order d-none" th:data-id="${dr.id}">Add</button>
                                 </div>
                             </th:block>
                         </div>
@@ -86,29 +99,43 @@
                              th:aria-labelledby="${type.id}">
                             <th:block th:each="dr : ${listDrinksAll}">
                                 <th:block th:if="${dr.type.id == type.id}">
-                                <div class="col-md-4 showdrinks" style="float: left;">
-                                    <img th:src="@{'/assets/img/'+ ${dr.image}}" style="width: 100%;height: 100%;">
-                                    <button id="add-order">Add</button>
-                                </div>
+                                    <div class="col-md-4 showdrinks" style="float: left;">
+                                        <img th:src="@{'/assets/img/'+ ${dr.image}}" style="width: 100%;height: 100px;">
+                                        <p th:text="${dr.name}"></p>
+                                        <button class="add-drinks-to-order d-none" th:data-id="${dr.id}">Add</button>
+                                    </div>
                                 </th:block>
                             </th:block>
                         </div>
                     </th:block>
                 </div>
             </div>
-            <div class="col-md-4" id="showOder" style="background-color: yellow">
-                <img src="/image/redbull.png" alt="">
-<!--            <div class="col-md-4" id="showOder" >-->
-               Chua chon ban
+            <div class="col-md-6" id="showOder" style="background-color: yellow">
+                <!--                bang order-->
+                <th:block th:replace="/layout/order-desk::order-desk"></th:block>
+                <!--                bang desk co khach-->
+                <div class="row" id="list-desk-not-empty">
+                    <h3>The table is occupied</h3>
+                    <th:block th:each="desk: ${deskListNotEmpty}">
+                        <div class="col-md-4" style="float: left">
+                            <button class="desk" style="color: red" th:data-id="${desk.id}"
+                                    th:text="${desk.name}"></button>
+                        </div>
+                    </th:block>
+                </div>
             </div>
         </div>
-
-
     </div>
 </div>
 
-<th:block th:replace="/layout/footer::footer"></th:block>
+<!--<th:block th:replace="/layout/footer::footer"></th:block>-->
 
 <th:block th:replace="/layout/script :: scriptAll"/>
+<script src="/assets/js/desk.js"></script>
+<script src="/assets/js/sell.js"></script>
+
+<script>
+
+</script>
 </body>
 </html>

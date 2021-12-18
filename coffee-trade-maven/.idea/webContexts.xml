@@ -6,6 +6,8 @@
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/action/sell.html" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/action" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/drinks/list.html" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/drinks" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/drinks/menu.html" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/drinks" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/layout/order-desk.html" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/layout" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/layout/script.html" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/layout" />
       </map>
     </option>
   </component>

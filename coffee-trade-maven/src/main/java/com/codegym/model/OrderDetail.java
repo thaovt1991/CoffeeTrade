@@ -9,7 +9,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -43,9 +45,13 @@ public class OrderDetail {
     @Min(1)
     private int quantity ;
 
+    @Digits(integer = 12, fraction = 0 )
+    private BigDecimal amount ;
+
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
+
 
     private boolean isDeleted = false;
 
