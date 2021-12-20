@@ -39,9 +39,9 @@ public class DeskControllerAPI {
     }
 
     @GetMapping("/getalldeskempty")
-    public List<Desk> getAllDeskEmpty() {
-        return deskService.findAllNotDeletedAndEmpty();
-    }
+        public List<Desk> getAllDeskEmpty() {
+            return deskService.findAllNotDeletedAndEmpty();
+        }
 
     @GetMapping("/getalldesknotempty")
     public List<Desk> getAllDeskNotEmpty() {

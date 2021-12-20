@@ -79,12 +79,12 @@ function drawDeskNotEmpty(){
 }
 
 
-function updateDesk(desk) {
+function updateDesk(desk,ept) {
     let oldDesk = {
         id: desk.id,
         name: desk.name,
         deleted: false ,
-        empty: false ,
+        empty: ept ,
     }
     return $.ajax({
         headers: {

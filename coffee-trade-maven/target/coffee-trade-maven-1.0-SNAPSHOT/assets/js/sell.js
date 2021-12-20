@@ -19,6 +19,7 @@ let clickDesk = function () {
             // console.log(desk)
             // $("desk-order").html(desk.name)
             if (desk.empty) {
+                $("#done ,#btn-total-money-order").prop("disabled",true);
                 idDrinksArr = new Array()
                 quantityArr = new Array()
                 drawNewOrderOfDesk()
@@ -32,30 +33,35 @@ let clickDesk = function () {
                 $("#day-order").html(day);
                 $("#new-order").removeClass("d-none");
 
-                $("#new-order").html(`
-                <div className="col-md-6" style="text-align: center">
-                    <button type="button" className="btn btn-outline-primary" id="done" data-id="${desk.id}" >Xong</button>
-                </div>
-                <div className="col-md-6" style="text-align: center">
-                      <button type="button" className="btn btn-outline-danger" id="cancel-order" onclick="backOrderDesk()">Hủy</button>
-                </div>`
-                )
+                // $("#new-order").html(`
+                // <div className="col-md-6" style="text-align: center">
+                //     <button type="button" className="btn btn-outline-primary" id="done" data-id="${desk.id}" >Xong</button>
+                // </div>
+                // <div className="col-md-6" style="text-align: center">
+                //       <button type="button" className="btn btn-outline-danger" id="cancel-order" onclick="backOrderDesk()">Hủy</button>
+                // </div>`
+                // )
 
+                $("#new-order").removeClass("d-none");
                 $("#old-order").addClass("d-none");
                 addOrder();
                 // clickDesk();
             } else {
                 getOrderDetailOfDesk(desk.id)
                 drawOrderNotPayment(desk.id)
+                $("#old-order").removeClass("d-none");
+                $("#new-order").addClass("d-none");
+                $("#btn-total-money-order").prop("disabled",false);
+                $("#btn-edit-order").prop("disabled",true);
 
-                $("#old-order").html(`
-                      <div class="col-md-6" style="text-align: center">
-                        <button type="button" class="btn btn-outline-warning" id="btn-edit-order" data-id="${desk.id}">Sửa</button>
-                    </div>
-                    <div class="col-md-6" style="text-align: center">
-                        <button type="button" class="btn btn-outline-info" id="btn-total-money-order" data-id="${desk.id}">Tính tiền
-                        </button>
-                    </div>`)
+                // $("#old-order").html(`
+                //       <div class="col-md-6" style="text-align: center">
+                //         <button type="button" class="btn btn-outline-warning" id="btn-edit-order" data-id="${desk.id}">Sửa</button>
+                //     </div>
+                //     <div class="col-md-6" style="text-align: center">
+                //         <button type="button" class="btn btn-outline-info" id="btn-total-money-order" data-id="${desk.id}">Tính tiền
+                //         </button>
+                //     </div>`)
 
                 // alert("Desk not empty")
             }
@@ -77,9 +83,11 @@ addOrder = function () {
             // console.log(desk)
             console.log(idDrinksArr)
             createOrder(desk).then(function () {
-                updateDesk(desk).then(function () {
+                updateDesk(desk,false).then(function () {
                     drawDeskAll().then(function () {
+                        // drawDeskNotEmpty().then(function (){
                         clickDesk();
+                        // })
                     });
                 });
             });
@@ -99,7 +107,8 @@ addOrder = function () {
 
 $(".add-drinks-to-order").on("click", function () {
     let idDrinks = $(this).data("id");
-
+    $("#done, #btn-total-money-order").prop("disabled",false);
+    $("#btn-edit-order").prop("disabled",false);
     $.ajax({
         type: "GET",
         url: `/api/drinks/${idDrinks}`
@@ -118,6 +127,7 @@ $(".add-drinks-to-order").on("click", function () {
         }
         total_money += drinks.price;
         $("#total_money").html(total_money + " VND");
+
     })
 })
 
@@ -153,14 +163,12 @@ createOrder = function (desk) {
         data: JSON.stringify(order)
     }).done(function (orderResp) {
         console.log(orderResp);
-        // console.log(idDrinksArr)
         for (let i = 0; i < idDrinksArr.length; i++) {
             crateOrderDetail(orderResp.id, idDrinksArr[i])
         }
 
         idDrinksArr = new Array()
         quantityArr = new Array()
-        // clickDesk();
     }).fail(function () {
         $.notify("Tạo order Không thành công",)
     })
@@ -177,7 +185,7 @@ getOrderByDeskId = function (id) {
         url: "/api/order/getorderbydeskid/" + id,
         type: "GET"
     }).done(function (order) {
-        console.log(order);
+        // console.log(order);
 
     }).fail(function () {
         alert("fail")
@@ -203,8 +211,7 @@ function crateOrderDetail(idOrder, idDrinks) {
         url: `/api/order_detail/create`,
         data: JSON.stringify(orrderDetailDTO)
     }).done(function (orderDetail) {
-        console.log(orderDetail)
-        //tru so luong thuc uong drinks
+        // console.log(orderDetail)
     }).fail(function () {
         alert("fails create order detail")
         // clickDesk();
@@ -261,7 +268,12 @@ function drawOrderNotPayment(desk_id) {
         type: "GET",
         url: `/api/order/getorderbydeskiddto/${desk_id}`
     }).done(function (orderDto) {
-        $("#select_desk").html(orderDto.nameDesk)
+        let str = `<select id="name_desk" name="name_desk">
+                       <option data-id="${orderDto.idDresk}" value="${orderDto.idDresk}">${orderDto.nameDesk}</option>
+                    </select>
+                  `
+        $("#select_desk").html(str)
+        // $("#select_desk").html(orderDto.nameDesk)
         $("#time-order").html(orderDto.createAtTime);
         $("#day-order").html(orderDto.createAtDay);
     })
@@ -310,13 +322,5 @@ function drawNewOrderOfDesk() {
                     </tr>
                     </tfoot>`);
 }
-
-
-// function drawAll() {
-//     drawDeskAll()
-//     drawDeskNotEmpty()
-//     drawOrderNotPayment()
-//     clickDesk();
-// }
 
 clickDesk();

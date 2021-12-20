@@ -6,13 +6,13 @@
             <legend>COFFEE DEMO</legend>
             <div width="100%">
                 <label> Bàn: </label>
-<!--                <span class="d-none" id="desk-order"></span>-->
+                <!--                <span class="d-none" id="desk-order"></span>-->
                 <span id="select_desk">
 <!--                <select id="name_desk" name="name_desk">-->
-<!--                    <th:block th:each="ds: ${listDesksEmpty}">-->
-<!--                        <option th:data-id="${ds.id}" th:value="${ds.id}"><span th:text="${ds.name}"></span></option>-->
-<!--                    </th:block>-->
-<!--                </select>-->
+                    <!--                    <th:block th:each="ds: ${listDesksEmpty}">-->
+                    <!--                        <option th:data-id="${ds.id}" th:value="${ds.id}"><span th:text="${ds.name}"></span></option>-->
+                    <!--                    </th:block>-->
+                    <!--                </select>-->
                 </span>
                 <br>
                 <label>Ngày: <span id="day-order"></span></label>
@@ -47,24 +47,109 @@
                     </tr>
                     </tfoot>
                 </table>
-                <div class="row div-new-order" id="new-order">
-<!--                    <div class="col-md-6" style="text-align: center">-->
-<!--                        <button type="button" class="btn btn-outline-primary" id="done">Xong</button>-->
-<!--                    </div>-->
-<!--                    <div class="col-md-6" style="text-align: center">-->
-<!--                        <button type="button" class="btn btn-outline-danger" id="cancel-order">Hủy</button>-->
-<!--                    </div>-->
-                </div>
-                <div class="row div-old-order" id="old-order">
-<!--                    <div class="col-md-6" style="text-align: center">-->
-<!--                        <button type="button" class="btn btn-outline-warning" id="btn-edit-order">Sửa</button>-->
-<!--                    </div>-->
-<!--                    <div class="col-md-6" style="text-align: center">-->
-<!--                        <button type="button" class="btn btn-outline-info" id="btn-total-money-order ">Tính tiền-->
-<!--                        </button>-->
-<!--                    </div>-->
+                <div class="row">
+                    <div class="col-md-4 div-new-order" id="new-order">
+                        <div style="text-align: center">
+                            <button type="button" class="btn btn-primary" id="done">Xong</button>
+                        </div>
+
+                    </div>
+                    <div class="col-md-4 div-old-order" id="old-order">
+                        <div style="text-align: center">
+                            <button type="button" class="btn btn-secondary" id="btn-edit-order">Sửa</button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4" style="text-align: center">
+                        <button type="button" class="btn btn-info" id="btn-total-money-order" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop">Tính tiền
+                        </button>
+                    </div>
+                    <div class="col-md-4" style="text-align: center">
+                        <button type="button" class="btn btn-danger" id="cancel-order">Hủy</button>
+                    </div>
+
                 </div>
             </div>
         </fieldset>
     </form>
+
+
+    <!-- Modal Tinnh tien -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">HÓA ĐƠN THANH TOÁN</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row container-fluid" id="bill_content">
+                        <div class="row">
+                            <div style="text-align: center">
+                                <h1>COFFEE DEMO</h1>
+                                <h5>28 Nguyễn Tri Phương, Thành phố Huế</h5>
+                            </div>
+                            <div>
+                                <label>Bàn</label>
+                                <label id="desk_of_bill"></label>
+                                <br>
+                                <label>Giờ vào</label>
+                                <label id="time_order"></label>
+                                <br>
+                                <label>Giờ ra</label>
+                                <label id="time_bill"></label>
+                                <br>
+                                <label>Nhân viên</label>
+                                <label id="staff_of_order"></label>
+                            </div>
+                        </div>
+                        <table width="100%" class="table table-bordered" border="1" id="tbListOrderDetails">
+                            <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên thức uống</th>
+                                <th>Số lượng</th>
+                                <th>Đơn giá</th>
+                                <th>Thành tiền (VND)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                            <tfoot>
+                            <tr style="font-weight: bolder">
+                                <td colspan="4">Tổng tiền :</td>
+                                <td id="total_money">0 VND</td>
+                            </tr>
+                            <tr style="font-weight: bolder">
+                                <td colspan="3">Mã giảm giá :</td>
+                                <td id="discount code">0%</td>
+                                <td id="money_discount">0 VND</td>
+                            </tr>
+                            <tr style="font-weight: bolder">
+                                <td colspan="4">Tổng tiền :</td>
+                                <td id="total_money_after">0 VND</td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" style="text-align: center">
+                                    <p style="font-style:italic; font-weight: bold">Chúc quý khách vui vẻ và hẹn gặp lại
+                                        !</p>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Đóng</button>
+                        <button type="button" id="create_bill" class="btn btn-primary" data-bs-dismiss="modal"> Thanh
+                            toán
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </th:block>

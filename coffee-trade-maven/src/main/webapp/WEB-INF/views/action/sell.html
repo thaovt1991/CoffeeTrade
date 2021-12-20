@@ -14,7 +14,7 @@
         .desk:hover {
             background-color: #4cae4c;
         }
-        .desk:link{
+        .desk::link{
             background-color: yellow;
         }
 
@@ -35,11 +35,11 @@
             background-image: url("/assets/img/table-set.png");
         }
 
-        #old-order button , #new-order button {
-            border: 2px solid red;
-            border-radius: 10px;
-            font-weight: bolder;
-        }
+        /*#old-order button , #new-order button {*/
+        /*    border: 2px solid red;*/
+        /*    border-radius: 10px;*/
+        /*    font-weight: bolder;*/
+        /*}*/
 
         fieldset {
             border: 4px solid blue;
@@ -98,7 +98,7 @@
                                     <img th:src="@{'/assets/img/'+ ${dr.image}}"
                                          style="width: 100%;height: 100px;margin-left: 0px">
                                     <p th:text="${dr.name}"></p>
-                                    <button class="add-drinks-to-order d-none" th:data-id="${dr.id}">Add</button>
+                                    <button class="add-drinks-to-order btn-warning d-none" th:data-id="${dr.id}">Add</button>
                                 </div>
                             </th:block>
                         </div>
@@ -111,7 +111,7 @@
                                     <div class="col-md-4 showdrinks" style="float: left;">
                                         <img th:src="@{'/assets/img/'+ ${dr.image}}" style="width: 100%;height: 100px;">
                                         <p th:text="${dr.name}"></p>
-                                        <button class="add-drinks-to-order d-none" th:data-id="${dr.id}">Add</button>
+                                        <button class="add-drinks-to-order btn-warning d-none" th:data-id="${dr.id}">Add</button>
                                     </div>
                                 </th:block>
                             </th:block>
@@ -136,6 +136,8 @@
         </div>
     </div>
 </div>
+
+
 
 <!--<th:block th:replace="/layout/footer::footer"></th:block>-->
 
