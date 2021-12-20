@@ -11,6 +11,8 @@ import com.codegym.service.order_detail.IOrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -34,28 +36,35 @@ public class OrderDetailControllerAPI {
         orderDetail.setOrder(order);
         orderDetail.setQuantity(orderDetailDTO.getQuantity());
         orderDetail.setDrinks(drinks);
+        BigDecimal amountDTO = drinks.getPrice().multiply(BigDecimal.valueOf(orderDetailDTO.getQuantity()));
         orderDetail.setAmount(orderDetailDTO.getAmount());
         return orderDetailService.save(orderDetail) ;
     }
 
-    @GetMapping("/orderdetail/orderdetailofdeskid/{id}")
-    public List<OrderDetail> getOrderDetailOfDeskid (@PathVariable Long id) {
-        Order order = orderService.getOrderByDeskId(id);
-        return orderDetailService.findOrderDetailByOrderId(order.getId());
+    @GetMapping("/orderdetailofdeskid/{id}")
+    public List<OrderDetailDTO> getOrderDetailOfDeskid (@PathVariable Long id) {
+        Order order = orderService.getOrderByDeskIdNotPayment(id);
+
+        List<OrderDetail> orderDetailList =  orderDetailService.findOrderDetailByOrderId(order.getId());
+        List<OrderDetailDTO> orderDetailDTOS = new ArrayList<>() ;
+        for (OrderDetail od : orderDetailList ){
+            orderDetailDTOS.add(od.toOrderDetailDTO()) ;
+        }
+      return orderDetailDTOS ;
     }
 
-    @GetMapping("/orderdetail/order-detail-of-deskid/{id}")
+    @GetMapping("/order-detail-of-deskid/{id}")
     public List<IOrderDetailSumDTO> getAllIOrderDetailSumDTOByOrderId (@PathVariable Long id) {
-        Order order = orderService.getOrderByDeskId(id);
+        Order order = orderService.getOrderByDeskIdNotPayment(id);
         return orderDetailService.getAllIOrderDetailSumDTOByOrderId(order.getId());
     }
 
-    @GetMapping("/orderdetail/getorderdetailbyorderid/{id}")
+    @GetMapping("/getorderdetailbyorderid/{id}")
     public List<OrderDetail> getOrderDetailByOrderIdOrderDetails (@PathVariable Long id) {
         return orderDetailService.findOrderDetailByOrderId(id);
     }
 
-    @GetMapping("/orderdetail/getallorderdetail")
+    @GetMapping("/getallorderdetail")
     public Iterable<OrderDetail> getAllOrderDetail () {
         return orderDetailService.findAllNotDeleted();
     }

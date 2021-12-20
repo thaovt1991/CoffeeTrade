@@ -16,6 +16,9 @@ public interface IDeskRepository extends JpaRepository<Desk, Long> {
     @Query(value = "select d from Desk d where d.isDeleted = false and d.isEmpty = true")
     List<Desk> findAllNotDeletedAndEmpty() ;
 
+    @Query(value = "select d from Desk d where d.isDeleted = false and d.isEmpty = false ")
+    List<Desk> findAllNotDeletedAndNotEmpty() ;
+
 
     @Query(value = "select d from Desk d where d.isDeleted = false and d.isEmpty= false")
     List<Desk> findAllByDeletedIsFalseAndEmptyIsFalse() ;

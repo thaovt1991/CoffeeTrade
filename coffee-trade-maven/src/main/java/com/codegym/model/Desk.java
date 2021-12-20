@@ -52,5 +52,11 @@ public class Desk {
     private List<Order> orderList;
 
 
+//    public Desk (Long id, String name, boolean isEmpty){
+//        this.id = id ;
+//        this.name = name ;
+//        this.isEmpty = isEmpty ;
+//    }
+
 
 }

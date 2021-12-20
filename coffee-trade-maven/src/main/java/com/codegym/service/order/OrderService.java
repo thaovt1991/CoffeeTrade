@@ -42,8 +42,12 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public Order getOrderByDeskId(Long id){
-        return orderRepository.getOrderByDeskId(id) ;
+    public Order getOrderByDeskIdNotPayment(Long id){
+        return orderRepository.getOrderByDeskIdNotPayment(id) ;
     };
 
+    @Override
+    public Order getOrderByDeskId(Long id) {
+        return orderRepository.getOrderByDeskId(id);
+    }
 }

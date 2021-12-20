@@ -6,12 +6,13 @@
             <legend>COFFEE DEMO</legend>
             <div width="100%">
                 <label> Bàn: </label>
+<!--                <span class="d-none" id="desk-order"></span>-->
                 <span id="select_desk">
-                <select id="name_desk" name="name_desk">
-                    <th:block th:each="ds: ${listDesksEmpty}">
-                        <option th:data-id="${ds.id}" th:value="${ds.id}"><span th:text="${ds.name}"></span></option>
-                    </th:block>
-                </select>
+<!--                <select id="name_desk" name="name_desk">-->
+<!--                    <th:block th:each="ds: ${listDesksEmpty}">-->
+<!--                        <option th:data-id="${ds.id}" th:value="${ds.id}"><span th:text="${ds.name}"></span></option>-->
+<!--                    </th:block>-->
+<!--                </select>-->
                 </span>
                 <br>
                 <label>Ngày: <span id="day-order"></span></label>
@@ -47,21 +48,21 @@
                     </tfoot>
                 </table>
                 <div class="row div-new-order" id="new-order">
-                    <div class="col-md-6" style="text-align: center">
-                        <button type="button" class="btn btn-outline-primary" id="done">Xong</button>
-                    </div>
-                    <div class="col-md-6" style="text-align: center">
-                        <button type="button" class="btn btn-outline-danger" id="cancel-order">Hủy</button>
-                    </div>
+<!--                    <div class="col-md-6" style="text-align: center">-->
+<!--                        <button type="button" class="btn btn-outline-primary" id="done">Xong</button>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-6" style="text-align: center">-->
+<!--                        <button type="button" class="btn btn-outline-danger" id="cancel-order">Hủy</button>-->
+<!--                    </div>-->
                 </div>
                 <div class="row div-old-order" id="old-order">
-                    <div class="col-md-6" style="text-align: center">
-                        <button type="button" class="btn btn-outline-warning" id="btn-edit-order">Sửa</button>
-                    </div>
-                    <div class="col-md-6" style="text-align: center">
-                        <button type="button" class="btn btn-outline-info" id="btn-total-money-order ">Tính tiền
-                        </button>
-                    </div>
+<!--                    <div class="col-md-6" style="text-align: center">-->
+<!--                        <button type="button" class="btn btn-outline-warning" id="btn-edit-order">Sửa</button>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-6" style="text-align: center">-->
+<!--                        <button type="button" class="btn btn-outline-info" id="btn-total-money-order ">Tính tiền-->
+<!--                        </button>-->
+<!--                    </div>-->
                 </div>
             </div>
         </fieldset>

@@ -1,6 +1,7 @@
 package com.codegym.model;
 
 
+import com.codegym.model.dto.OrderDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -33,18 +34,23 @@ public class Order {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss Z", timezone = "Asia/Ho_Chi_Minh")
     private Date created_at = new Date();
 
+    //    @ManyToOne
+//    @JoinColumn(name = "create_by")
+//    private Staff staff;
     private Long create_by;
-
 
     @UpdateTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss Z", timezone = "Asia/Ho_Chi_Minh")
     private Date update_at = new Date();
 
+    //    @ManyToOne
+//    @JoinColumn(name = "update_by")
+//    private Staff staff_up;
     private Long update_by;
 
     private boolean isDeleted = false;
 
-    private boolean isPaymented = false ;
+    private boolean isPaymented = false;
 
     @JsonIgnore
     @OneToMany(targetEntity = OrderDetail.class, mappedBy = "order")
@@ -63,6 +69,18 @@ public class Order {
     @JsonIgnore
     private Bill bill;
 
+    public OrderDTO orderDTO() {
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setId(id);
+        orderDTO.setIdStaff(getCreate_by());
+        orderDTO.setIdDesk(desk.getId());
+        orderDTO.setNameDesk(desk.getName());
+        String createAt = getCreated_at().toString() ;
+        int index = createAt.indexOf(" ");
+        orderDTO.setCreateAtDay(createAt.substring(0,index));
+        orderDTO.setCreateAtTime(createAt.substring(index,createAt.length()-1));
 
+        return orderDTO;
+    }
 
 }

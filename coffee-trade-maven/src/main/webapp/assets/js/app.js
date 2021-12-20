@@ -22,3 +22,11 @@ class OrderDetail{
         this.idOrder = idOrder ;
     }
 }
+
+class Order{
+    constructor(id, idDresk , amount ) {
+        this.id = id ;
+        this.idDresk = idDresk ;
+        this.idDrinks = idDrinks ;
+    }
+}

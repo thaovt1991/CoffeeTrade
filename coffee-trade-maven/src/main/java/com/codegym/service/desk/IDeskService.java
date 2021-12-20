@@ -10,4 +10,7 @@ public interface IDeskService extends IGeneralService<Desk> {
     List<Desk> findAllByDeletedIsFalseAndEmptyIsFalse() ;
 
     List<Desk> findAllNotDeletedAndEmpty() ;
+
+    List<Desk> findAllNotDeletedAndNotEmpty() ;
+
 }

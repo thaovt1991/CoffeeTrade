@@ -5,6 +5,8 @@ import com.codegym.service.IGeneralService;
 
 public interface IOrderService extends IGeneralService<Order> {
 
+    Order getOrderByDeskIdNotPayment(Long id) ;
+
     Order getOrderByDeskId(Long id) ;
 
 }

@@ -46,6 +46,11 @@ public class DeskService implements  IDeskService{
     }
 
     @Override
+    public List<Desk> findAllNotDeletedAndNotEmpty() {
+        return deskRepository.findAllNotDeletedAndNotEmpty();
+    }
+
+    @Override
     public List<Desk> findAllNotDeletedAndEmpty() {
         return deskRepository.findAllNotDeletedAndEmpty();
     }

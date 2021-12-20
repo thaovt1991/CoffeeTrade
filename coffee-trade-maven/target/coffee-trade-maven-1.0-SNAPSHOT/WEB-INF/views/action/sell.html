@@ -14,6 +14,9 @@
         .desk:hover {
             background-color: #4cae4c;
         }
+        .desk:link{
+            background-color: yellow;
+        }
 
         .nav-link.tab-menu {
             font-weight: bolder;
@@ -30,6 +33,12 @@
 
         #show_sell {
             background-image: url("/assets/img/table-set.png");
+        }
+
+        #old-order button , #new-order button {
+            border: 2px solid red;
+            border-radius: 10px;
+            font-weight: bolder;
         }
 
         fieldset {
@@ -49,9 +58,9 @@
 <div style="background-color: white; width: 100%">
     <div class="container-fluid">
 
-        <div class="row">
+        <div class="row show-all-desk">
             <th:block th:each="desk: ${listDesks}">
-                <div class="col-md-1" style="float: left">
+                <div class="col-md-1 " style="float: left">
                     <th:block th:if="${desk.isEmpty()}">
                         <button class="desk" style="color: blue" th:data-id="${desk.id}"
                                 th:text="${desk.name}"></button>
@@ -132,10 +141,10 @@
 
 <th:block th:replace="/layout/script :: scriptAll"/>
 <script src="/assets/js/desk.js"></script>
+<!--<script src="/assets/js/order.js"></script>-->
 <script src="/assets/js/sell.js"></script>
 
 <script>
-
 </script>
 </body>
 </html>

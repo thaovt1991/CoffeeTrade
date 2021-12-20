@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public interface IOrderDetailSumDTO {
 
     String getDrinksName();
-    BigDecimal getPrice();
     int getQuantity();
+    BigDecimal getPrice();
     BigDecimal getAmount();
 }

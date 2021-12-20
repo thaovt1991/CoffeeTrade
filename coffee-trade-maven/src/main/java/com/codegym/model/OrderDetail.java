@@ -1,5 +1,6 @@
 package com.codegym.model;
 
+import com.codegym.model.dto.OrderDetailDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -54,5 +55,18 @@ public class OrderDetail {
 
 
     private boolean isDeleted = false;
+
+    public OrderDetailDTO toOrderDetailDTO(){
+        OrderDetailDTO orderDetailDTO = new OrderDetailDTO() ;
+        orderDetailDTO.setId(id) ;
+        orderDetailDTO.setName(drinks.getName());
+        orderDetailDTO.setId_order(order.getId());
+        orderDetailDTO.setId_drink(drinks.getId());
+        orderDetailDTO.setPrice(drinks.getPrice());
+        orderDetailDTO.setQuantity(quantity);
+        BigDecimal amount = drinks.getPrice().multiply(BigDecimal.valueOf(quantity)) ;
+        orderDetailDTO.setAmount(amount);
+        return orderDetailDTO ;
+    }
 
 }
