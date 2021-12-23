@@ -10,4 +10,6 @@ public interface IOrderDetailService extends IGeneralService<OrderDetail> {
     List<OrderDetail> findOrderDetailByOrderId(Long id);
 
     List<IOrderDetailSumDTO> getAllIOrderDetailSumDTOByOrderId(Long id);
+
+    List<OrderDetail> findAllNotDeletedOfOrder(Long id);
 }

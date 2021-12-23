@@ -51,4 +51,9 @@ public class OrderDetailService implements IOrderDetailService{
     public List<IOrderDetailSumDTO> getAllIOrderDetailSumDTOByOrderId(Long id) {
         return orderDetailRepository.getAllIOrderDetailSumDTOByOrderId(id);
     }
+
+    @Override
+    public List<OrderDetail> findAllNotDeletedOfOrder(Long id) {
+        return orderDetailRepository.findAllNotDeletedOfOrder(id);
+    }
 }

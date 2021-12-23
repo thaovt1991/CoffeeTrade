@@ -66,19 +66,6 @@ public class DeskControllerAPI {
         return new ResponseEntity<Boolean>(true, HttpStatus.CREATED);
     }
 
-//    @PostMapping("/edit")
-//    public Desk editDesk(@RequestBody Desk desk) {
-//        return deskService.save(desk);
-//    }
-//
-//    @PutMapping("/update/{id}")
-//    public Desk updateDesk(@PathVariable Long id) {
-//        Desk desk = deskService.findById(id).get();
-//        Desk newDesk = new Desk();
-//        newDesk.setId(desk.getId());
-//        newDesk.setName(desk.getName());
-//        return deskService.save(newDesk);
-//    }
 
     @PutMapping("/update")
     public Desk updateDesk(@RequestBody Desk desk) {

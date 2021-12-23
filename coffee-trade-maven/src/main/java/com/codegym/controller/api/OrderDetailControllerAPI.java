@@ -1,5 +1,6 @@
 package com.codegym.controller.api;
 
+import com.codegym.model.Desk;
 import com.codegym.model.Drinks;
 import com.codegym.model.Order;
 import com.codegym.model.OrderDetail;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/order_detail")
@@ -38,6 +40,21 @@ public class OrderDetailControllerAPI {
         orderDetail.setDrinks(drinks);
         BigDecimal amountDTO = drinks.getPrice().multiply(BigDecimal.valueOf(orderDetailDTO.getQuantity()));
         orderDetail.setAmount(orderDetailDTO.getAmount());
+        return orderDetailService.save(orderDetail) ;
+    }
+
+    @PutMapping("/update")
+    public OrderDetail updateOrderDetail(@RequestBody OrderDetailDTO orderDetailDTO) {
+        Long id = orderDetailDTO.getId() ;
+
+        Order order = orderService.findById(orderDetailDTO.getId_order()).get();
+        Drinks drinks = drinksService.findById(orderDetailDTO.getId_drink()).get();
+        OrderDetail orderDetail = orderDetailDTO.toOrderDetail(drinks,order) ;
+        Optional<OrderDetail> orderDetailOptional = orderDetailService.findById(id);
+
+        BigDecimal amountDTO = drinks.getPrice().multiply(BigDecimal.valueOf(orderDetailDTO.getQuantity()));
+        orderDetail.setAmount(orderDetailDTO.getAmount());
+        orderDetail.setId(orderDetailOptional.get().getId());
         return orderDetailService.save(orderDetail) ;
     }
 

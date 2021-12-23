@@ -1,8 +1,32 @@
+// let arrayOrderDetail = new Array()
 let idDrinksArr = new Array();
 let quantityArr = new Array();
 let oldQuantity = 0;
 let total_money = 0;
+let new_bill = new Bill();
+let new_staff = new Staff();
 
+// let orderDetail = new OrderDetail();
+
+
+
+
+function callStaff(id_staff) {
+    $.ajax({
+        type: "GET",
+        url: `/api/staff/${id_staff}`
+    }).done(function (staff) {
+        new_staff = {
+            idStaff: staff.id,
+            nameStaff: staff.fullName,
+        }
+    })
+}
+
+
+
+
+///////////////////////////////////SELL/////////////////////////////////////
 let clickDesk = function () {
     console.log("desk on click")
     $(".desk").on("click", function () {
@@ -19,10 +43,13 @@ let clickDesk = function () {
             // console.log(desk)
             // $("desk-order").html(desk.name)
             if (desk.empty) {
-                $("#done ,#btn-total-money-order").prop("disabled",true);
+                $("#done ,#btn-payment-order").prop("disabled", true);
+                $("#new-order").removeClass("d-none");
+                $("#old-order").addClass("d-none");
                 idDrinksArr = new Array()
                 quantityArr = new Array()
                 drawNewOrderOfDesk()
+                // drawDeskEmpty()
                 drawDeskChecked(idDesk);
                 // $("#select_desk").html(idDesk);
                 $("#name-desk").html(desk.name);
@@ -31,19 +58,7 @@ let clickDesk = function () {
                 let time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
                 $("#time-order").html(time);
                 $("#day-order").html(day);
-                $("#new-order").removeClass("d-none");
 
-                // $("#new-order").html(`
-                // <div className="col-md-6" style="text-align: center">
-                //     <button type="button" className="btn btn-outline-primary" id="done" data-id="${desk.id}" >Xong</button>
-                // </div>
-                // <div className="col-md-6" style="text-align: center">
-                //       <button type="button" className="btn btn-outline-danger" id="cancel-order" onclick="backOrderDesk()">Hủy</button>
-                // </div>`
-                // )
-
-                $("#new-order").removeClass("d-none");
-                $("#old-order").addClass("d-none");
                 addOrder();
                 // clickDesk();
             } else {
@@ -51,19 +66,9 @@ let clickDesk = function () {
                 drawOrderNotPayment(desk.id)
                 $("#old-order").removeClass("d-none");
                 $("#new-order").addClass("d-none");
-                $("#btn-total-money-order").prop("disabled",false);
-                $("#btn-edit-order").prop("disabled",true);
+                $("#btn-payment-order").prop("disabled", false);
+                $("#btn-edit-order").prop("disabled", true);
 
-                // $("#old-order").html(`
-                //       <div class="col-md-6" style="text-align: center">
-                //         <button type="button" class="btn btn-outline-warning" id="btn-edit-order" data-id="${desk.id}">Sửa</button>
-                //     </div>
-                //     <div class="col-md-6" style="text-align: center">
-                //         <button type="button" class="btn btn-outline-info" id="btn-total-money-order" data-id="${desk.id}">Tính tiền
-                //         </button>
-                //     </div>`)
-
-                // alert("Desk not empty")
             }
         })
     });
@@ -81,19 +86,17 @@ addOrder = function () {
             url: `/api/desk/${idDesk}`
         }).done(function (desk) {
             // console.log(desk)
+            console.log(quantityArr)
             console.log(idDrinksArr)
             createOrder(desk).then(function () {
-                updateDesk(desk,false).then(function () {
+                updateDesk(desk, false).then(function () {
                     drawDeskAll().then(function () {
-                        // drawDeskNotEmpty().then(function (){
                         clickDesk();
                         // })
                     });
                 });
             });
 
-            // drawDeskAll();
-            // drawDeskNotEmpty();
             backOrderDesk();
             alert("Success create order")
 
@@ -107,8 +110,10 @@ addOrder = function () {
 
 $(".add-drinks-to-order").on("click", function () {
     let idDrinks = $(this).data("id");
-    $("#done, #btn-total-money-order").prop("disabled",false);
-    $("#btn-edit-order").prop("disabled",false);
+    $("#done, #btn-payment-order").prop("disabled", false);
+    $("#btn-edit-order").prop("disabled", false);
+    $("#btn-payment-order").prop("disabled", true);
+
     $.ajax({
         type: "GET",
         url: `/api/drinks/${idDrinks}`
@@ -127,15 +132,32 @@ $(".add-drinks-to-order").on("click", function () {
         }
         total_money += drinks.price;
         $("#total_money").html(total_money + " VND");
-
+        $("#total_money_order").val(total_money);
     })
 })
+
+
+// $(".quantity_drinks").change(function () {
+//     alert("ok")
+// })
+// //     // let idDrinks = $(this).data("id")
+// //     // let quantity = $(this).val();
+// //     // $.ajax({
+// //     //     type: "GET",
+// //     //     url: `/api/drinks/${idDrinks}`
+// //     // }).done(function (drinks) {
+// //     //     let amount = quantity * drinks.price ;
+// //     //     $("total_"+drinks.id).val(amount) ;
+// //     // })
+// // })
 
 
 function getsShowOrderDetails(drinks, index) {
     return str = `
                <tr id='tr_${drinks.id}'>
-                <td>${index}</td>
+                <td><span>${index}</span>
+                <input type="hidden" class="idOrderDetail"  id="drinks_${drinks.id}" value="0">
+                </td>
                 <td >${drinks.name}</td>
                  <td>
                  <input type="number" class="quantity_drinks" id="quantity_${drinks.id}" name="quantity_${drinks.id}" style="width: 60px" data-id="${drinks.id}" value="1">
@@ -166,6 +188,7 @@ createOrder = function (desk) {
         for (let i = 0; i < idDrinksArr.length; i++) {
             crateOrderDetail(orderResp.id, idDrinksArr[i])
         }
+
 
         idDrinksArr = new Array()
         quantityArr = new Array()
@@ -223,24 +246,25 @@ function crateOrderDetail(idOrder, idDrinks) {
 /////// order details
 getOrderDetailOfDesk = function (desk_id) {
     $.ajax({
-        // headers: {
-        //     'Accept': 'application/json',
-        //     'Content-Type': 'application/json'
-        // },
         url: `/api/order_detail/orderdetailofdeskid/${desk_id}`,
         type: "GET",
     }).done(function (orderdetails) {
         console.log(orderdetails);
-        let str = ""
+        let str = "";
+        let str_bill = "";
         let sum = 0;
         for (i = 0; i < orderdetails.length; i++) {
             idDrinksArr.push(orderdetails[i].id_drink);
             quantityArr.push(orderdetails[i].quantity)
+            // orderDetail = new OrderDetail(orderdetails[i].id, orderdetails[i].name, orderdetails[i].quantity, orderdetails[i].price, orderdetails[i].amount, orderdetails[i].id_drink, orderdetails[i].id_order);
+            // arrayOrderDetail.push(orderDetail);
             sum += orderdetails[i].amount
 
             str += `
                <tr id='tr_${orderdetails[i].id_drink}'>
-                <td>${i + 1}</td>
+                <td> <span>${i + 1}</span>
+                <input type="hidden" class="idOrderDetail"  id="drinks_${orderdetails[i].id_drink}" value="${orderdetails[i].id}">
+                </td>
                 <td >${orderdetails[i].name}</td>
                  <td>
                  <input type="number" class="quantity_drinks" id="quantity_${orderdetails[i].id_drink}" name="quantity_${orderdetails[i].id_drink}" style="width: 60px" data-id="${orderdetails[i].id_drink}" value="${orderdetails[i].quantity}">
@@ -248,13 +272,26 @@ getOrderDetailOfDesk = function (desk_id) {
             <td>${orderdetails[i].price}</td>
             <td id="total_${orderdetails[i].id_drink}">${orderdetails[i].amount}</td>
             </tr>`
+
+
+            str_bill += `<tr'>
+                <td> <span>${i + 1}</span>
+                </td>
+                <td >${orderdetails[i].name}</td>
+                 <td style="width: 60px" >${orderdetails[i].quantity}
+                 </td>
+            <td>${orderdetails[i].price}</td>
+            <td>${orderdetails[i].amount}</td>
+            </tr>`
+
         }
-        drawOrderNotPayment(desk_id)
+        drawOrderNotPayment(desk_id);
         $("#tbListOrderDetails tbody").html(str)
+        $("#tbListOrderDetailsBill tbody").html(str_bill);
         console.log(sum)
         $("#total_money").html(sum + " VND")
+        $("#total_money_order").val(sum);
         total_money = sum;
-
 
     }).fail(function () {
         alert("Tải thông tin bàn không thành công")
@@ -263,21 +300,163 @@ getOrderDetailOfDesk = function (desk_id) {
 }
 
 
+function editOrderDetail(idOrder, idDrinks) {
+    let quantity = quantityArr[idDrinksArr.indexOf(idDrinks)];
+
+    let idOrderDetail = $("#drinks_" + idDrinks).val()
+    console.log(idOrderDetail)
+    if (idOrderDetail != 0) {
+        let orrderDetailDTO = {
+            id: idOrderDetail,
+            id_drink: idDrinks,
+            id_order: idOrder,
+            quantity: quantity,
+        }
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "PUT",
+            url: `/api/order_detail/update`,
+            data: JSON.stringify(orrderDetailDTO)
+        }).done(function (orderDetail) {
+            // alert("edit success order detail")
+        }).fail(function () {
+            alert("Fail edit order detail")
+        })
+    } else {
+        crateOrderDetail(idOrder, idDrinks)
+    }
+}
+
+//click de sua hhoạc thêm oder
+// editOrder = function () {
+$("#btn-edit-order").on("click", function () {
+    let idDesk = $("#name_desk").val();
+    // console.log(idDesk)
+    $.ajax({
+        type: "GET",
+        url: "/api/order/getorderbydeskid/" + idDesk,
+    }).done(function (order) {
+        for (let i = 0; i < idDrinksArr.length; i++) {
+            editOrderDetail(order.id, idDrinksArr[i]);
+        }
+
+        idDrinksArr = new Array()
+        quantityArr = new Array()
+        drawNewOrderOfDesk()
+        $("#order").addClass("d-none");
+        $("#list-desk-not-empty").removeClass("d-none");
+        $(".add-drinks-to-order").addClass("d-none")
+    })
+
+})
+
+// }
+
+
 function drawOrderNotPayment(desk_id) {
     $.ajax({
         type: "GET",
         url: `/api/order/getorderbydeskiddto/${desk_id}`
     }).done(function (orderDto) {
+        console.log(orderDto)
         let str = `<select id="name_desk" name="name_desk">
-                       <option data-id="${orderDto.idDresk}" value="${orderDto.idDresk}">${orderDto.nameDesk}</option>
+                       <option data-id="${desk_id}" value="${desk_id}" selected>${orderDto.nameDesk}</option>
                     </select>
+                    <input type="hidden" id="id_order"  value="${orderDto.id}">
+                    <input type="hidden" id="name_desk_order" value="${orderDto.nameDesk}">
+                    <input type="hidden" id="time_begin" value="${orderDto.createAtTime} - ${orderDto.createAtDay}">
+                     <input type="hidden" id="idStaffOrder" value="${orderDto.idStaff}">
+               
                   `
         $("#select_desk").html(str)
-        // $("#select_desk").html(orderDto.nameDesk)
         $("#time-order").html(orderDto.createAtTime);
         $("#day-order").html(orderDto.createAtDay);
     })
 }
+
+function callStaff(id_staff) {
+    $.ajax({
+        type: "GET",
+        url: `/api/staff/${id_staff}`
+    }).done(function (staff) {
+        new_staff = {
+            idStaff: staff.id,
+            nameStaff: staff.fullName,
+        }
+    })
+}
+
+$("#btn-payment-order").on("click", function () {
+    callStaff($("#idStaffOrder").val())
+    console.log(new_staff)
+    new_bill.idOrderBill = $("#id_order").val();
+    new_bill.nameDesk = $("#name_desk_order").val();
+    new_bill.timeBegin = $("#time_begin").val();
+    let dt = new Date();
+    new_bill.timeEnd = dt.getMonth() + ":" + dt.getMinutes() + ":" + dt.getSeconds() + " - " + dt.getFullYear() + "-" + dt.getMonth() + "-" + dt.getDate();
+    new_bill.idStaff = $("#idStaffOrder").val()
+    new_bill.nameStaff = $("#idStaffOrder").val();//tam thoi doi id vao
+    let money_reality = $("#total_money_order").val();
+    new_bill.promotionBill = 0;
+    new_bill.surchargeBill = 0;
+    new_bill.taxBill = 10;
+    new_bill.totalMoneyBill = Math.round(money_reality * (1 - new_bill.promotionBill / 100 + new_bill.surchargeBill / 100) * (1 + new_bill.taxBill / 100));
+
+    $("#id_order_of_bill").html(new_bill.idOrderBill);
+    $("#desk_of_bill").html(new_bill.nameDesk);
+    $("#time_order").html(new_bill.timeBegin);
+    $("#time_bill").html(new_bill.timeEnd);
+    $("#staff_of_bill").html(new_bill.nameStaff);
+    $("#total_money_bill").html(money_reality + " VND");
+    $("#promotion").html(new_bill.promotionBill + "%");
+    $("#money_promotion").html((new_bill.promotionBill * money_reality / 100) + " VND");
+    $("#surcharge").html(new_bill.surchargeBill + "%");
+    $("#money_surcharge").html((new_bill.surchargeBill * money_reality / 100) + " VND");
+    $("#tax").html(new_bill.taxBill + "%");
+    $("#money_tax").html(new_bill.taxBill * money_reality / 100 + " VND");
+    $("#total_money_bill_after").html(new_bill.totalMoneyBill + " VND");
+
+})
+
+$("#create_bill").on("click", function () {
+    let billOdt = {
+        idOrder: new_bill.idOrderBill,
+        idStaff: new_bill.idStaff,
+        promotion: new_bill.promotionBill,
+        surcharge: new_bill.surchargeBill,
+        tax: new_bill.taxBill,
+        totalMoney: new_bill.totalMoneyBill
+    }
+    $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        type: "POST",
+        url: `/api/bill/create`,
+        data: JSON.stringify(billOdt)
+    }).done(function (billDto) {
+
+         drawDeskNotEmpty()
+         drawDeskAll().then(function () {
+             clickDesk();
+         })
+
+        idDrinksArr = new Array()
+        quantityArr = new Array()
+        drawNewOrderOfDesk()
+        $("#order").addClass("d-none");
+        $("#list-desk-not-empty").removeClass("d-none");
+        $(".add-drinks-to-order").addClass("d-none")
+        alert("Thanh toán thành công !")
+        clickDesk()
+    }).fail(function () {
+        alert("Toang")
+    })
+})
 
 
 $("#cancel-order").on("click", function () {
@@ -288,11 +467,10 @@ $("#cancel-order").on("click", function () {
     $("#list-desk-not-empty").removeClass("d-none");
     $(".add-drinks-to-order").addClass("d-none")
 
-});
+})
+
 
 function backOrderDesk() {
-    // clickDesk();
-    // drawDesk();
     drawNewOrderOfDesk()
     $("#order").addClass("d-none");
     $("#list-desk-not-empty").removeClass("d-none");
@@ -319,8 +497,11 @@ function drawNewOrderOfDesk() {
                     <tr style="font-weight: bolder">
                         <td colspan="4">Tổng tiền :</td>
                         <td id="total_money" >0 VND</td>
+                        <input type="hidden" id="total_money_order">
                     </tr>
                     </tfoot>`);
+
 }
+
 
 clickDesk();

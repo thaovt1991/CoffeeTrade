@@ -9,10 +9,10 @@
                 <!--                <span class="d-none" id="desk-order"></span>-->
                 <span id="select_desk">
 <!--                <select id="name_desk" name="name_desk">-->
-                    <!--                    <th:block th:each="ds: ${listDesksEmpty}">-->
-                    <!--                        <option th:data-id="${ds.id}" th:value="${ds.id}"><span th:text="${ds.name}"></span></option>-->
-                    <!--                    </th:block>-->
-                    <!--                </select>-->
+<!--                                        <th:block th:each="ds: ${listDesksEmpty}">-->
+<!--                                            <option th:data-id="${ds.id}" th:value="${ds.id}"><span th:text="${ds.name}"></span></option>-->
+<!--                                        </th:block>-->
+<!--                                    </select>-->
                 </span>
                 <br>
                 <label>Ngày: <span id="day-order"></span></label>
@@ -27,7 +27,7 @@
                     </th:block>
                 </select>
 
-                <table width="100%" class="table table-bordered" border="1" id="tbListOrderDetails">
+                <table width="100%" class="table table-hover table-bordered" border="1" id="tbListOrderDetails">
                     <thead>
                     <tr>
                         <th>STT</th>
@@ -44,24 +44,25 @@
                     <tr style="font-weight: bolder">
                         <td colspan="4">Tổng tiền :</td>
                         <td id="total_money">0 VND</td>
+                        <input type="hidden" id="total_money_order">
                     </tr>
                     </tfoot>
                 </table>
                 <div class="row">
                     <div class="col-md-4 div-new-order" id="new-order">
                         <div style="text-align: center">
-                            <button type="button" class="btn btn-primary" id="done">Xong</button>
+                            <button type="button" class="btn btn-success" id="done">Xong</button>
                         </div>
 
                     </div>
                     <div class="col-md-4 div-old-order" id="old-order">
                         <div style="text-align: center">
-                            <button type="button" class="btn btn-secondary" id="btn-edit-order">Sửa</button>
+                            <button type="button" class="btn btn-primary" id="btn-edit-order">Sửa</button>
                         </div>
                     </div>
 
                     <div class="col-md-4" style="text-align: center">
-                        <button type="button" class="btn btn-info" id="btn-total-money-order" data-bs-toggle="modal"
+                        <button type="button" class="btn btn-info" id="btn-payment-order" data-bs-toggle="modal"
                                 data-bs-target="#staticBackdrop">Tính tiền
                         </button>
                     </div>
@@ -86,26 +87,29 @@
                 </div>
                 <div class="modal-body">
                     <div class="row container-fluid" id="bill_content">
-                         <div class="row">
-                             <div style="text-align: center">
-                                 <h1>COFFEE DEMO</h1>
-                                 <h5>28 Nguyễn Tri Phương, Thành phố Huế</h5>
-                             </div>
-                             <div>
-                                 <label>Bàn</label>
-                                  <label id="desk_of_bill"></label>
-                                 <br>
-                                 <label>Giờ vào</label>
-                                 <label id="time_order"></label>
-                                 <br>
-                                 <label>Giờ ra</label>
-                                 <label id="time_bill"></label>
-                                 <br>
-                                 <label>Nhân viên</label>
-                                 <label id="staff_of_order"></label>
-                             </div>
-                         </div>
-                        <table width="100%" class="table table-bordered" border="1" id="tbListOrderDetails">
+                        <div class="row">
+                            <div style="text-align: center">
+                                <h1>COFFEE DEMO</h1>
+                                <h5>28 Nguyễn Tri Phương, Thành phố Huế</h5>
+                            </div>
+                            <div>
+                                <label>Mã thanh toán :</label>
+                                <label id="id_order_of_bill"></label>
+                                <br>
+                                <label>Bàn :</label>
+                                <label id="desk_of_bill"></label>
+                                <br>
+                                <label>Giờ vào :</label>
+                                <label id="time_order"></label>
+                                <br>
+                                <label>Giờ ra :</label>
+                                <label id="time_bill"></label>
+                                <br>
+                                <label>Nhân viên :</label>
+                                <label id="staff_of_bill"></label>
+                            </div>
+                        </div>
+                        <table width="100%" class="table table-bordered" border="1" id="tbListOrderDetailsBill">
                             <thead>
                             <tr>
                                 <th>STT</th>
@@ -118,23 +122,34 @@
                             <tbody>
 
                             </tbody>
-                            <tfoot style="border: 0px">
+                            <tfoot>
                             <tr style="font-weight: bolder">
                                 <td colspan="4">Tổng tiền :</td>
-                                <td id="total_money">0 VND</td>
+                                <td id="total_money_bill">0 VND</td>
                             </tr>
                             <tr style="font-weight: bolder">
-                                <td  colspan="3">Mã giảm giá :</td>
-                                <td id="discount code">0%</td>
-                                <td id="money_discount">0 VND</td>
+                                <td colspan="3">Mã giảm giá :</td>
+                                <td id="promotion">0%</td>
+                                <td id="money_promotion">0 VND</td>
                             </tr>
                             <tr style="font-weight: bolder">
-                                <td colspan="4">Tổng tiền :</td>
-                                <td id="total_money_after">0 VND</td>
+                                <td colspan="3">Phí phục vụ:</td>
+                                <td id="surcharge">0%</td>
+                                <td id="money_surcharge">0 VND</td>
+                            </tr>
+                            <tr style="font-weight: bolder">
+                                <td colspan="3">Thuế:</td>
+                                <td id="tax">10%</td>
+                                <td id="money_tax">0 VND</td>
+                            </tr>
+                            <tr style="font-weight: bolder">
+                                <td colspan="4" style="font-weight: bold;font-size: 20px">Tổng tiền thực trả :</td>
+                                <td id="total_money_bill_after" style="font-weight: bold;font-size: 20px">VND</td>
                             </tr>
                             <tr>
                                 <td colspan="5" style="text-align: center">
-                                    <p style="font-style:italic; font-weight: bold">Chúc quý khách vui vẻ và hẹn gặp lại !</p>
+                                    <p style="font-style:italic; font-weight: bold">Chúc quý khách vui vẻ và hẹn gặp lại
+                                        !</p>
                                 </td>
                             </tr>
                             </tfoot>
@@ -143,7 +158,9 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Đóng</button>
-                        <button type="button" id="create_bill" class="btn btn-primary" data-bs-dismiss="modal"> Thanh toán</button>
+                        <button type="button" id="create_bill" class="btn btn-primary" data-bs-dismiss="modal"> Thanh
+                            toán
+                        </button>
                     </div>
                 </div>
             </div>

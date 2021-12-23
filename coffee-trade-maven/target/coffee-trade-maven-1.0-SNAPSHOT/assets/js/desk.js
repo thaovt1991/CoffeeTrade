@@ -1,4 +1,4 @@
-function drawDesk() {
+function drawDeskEmpty() {
     $.ajax({
         type: "GET",
         url: "/api/desk/getalldeskempty"
@@ -56,6 +56,7 @@ function drawDeskAll() {
             }
         }
         $(".show-all-desk").html(str);
+
     })
     .fail(function () {
         alert("draw all desk fail")
@@ -75,6 +76,7 @@ function drawDeskNotEmpty(){
                         </div>`
         }
          $("#list-desk-not-empty").html(str) ;
+
     });
 }
 
@@ -96,8 +98,8 @@ function updateDesk(desk,ept) {
         data: JSON.stringify(oldDesk)
     }).done(function () {
         drawDeskAll();
-        // $("#select_desk").html(desk.id);
-        drawDeskChecked();
+        // drawDeskEmpty()
+        // drawDeskChecked();
         drawDeskNotEmpty()
     }).fail(function () {
        console.log("Fail  updateDesk")

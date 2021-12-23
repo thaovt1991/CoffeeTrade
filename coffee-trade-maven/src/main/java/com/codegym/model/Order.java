@@ -69,7 +69,7 @@ public class Order {
     @JsonIgnore
     private Bill bill;
 
-    public OrderDTO orderDTO() {
+    public OrderDTO toOrderDTO(){
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(id);
         orderDTO.setIdStaff(getCreate_by());
@@ -77,8 +77,9 @@ public class Order {
         orderDTO.setNameDesk(desk.getName());
         String createAt = getCreated_at().toString() ;
         int index = createAt.indexOf(" ");
+        int index_last = createAt.indexOf(".");
         orderDTO.setCreateAtDay(createAt.substring(0,index));
-        orderDTO.setCreateAtTime(createAt.substring(index,createAt.length()-1));
+        orderDTO.setCreateAtTime(createAt.substring(index,index_last));
 
         return orderDTO;
     }

@@ -2,7 +2,6 @@ package com.codegym.controller.api;
 
 import com.codegym.model.Order;
 import com.codegym.model.dto.OrderDTO;
-import com.codegym.service.desk.IDeskService;
 import com.codegym.service.order.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +25,9 @@ public class OrderControllerAPI {
 
     @GetMapping("/getorderbydeskiddto/{id}")
     public OrderDTO getOrderDTOByDeskid (@PathVariable Long id) {
-        return orderService.getOrderByDeskIdNotPayment(id).orderDTO();
+        return orderService.getOrderByDeskIdNotPayment(id).toOrderDTO();
     }
+
+
 
 }

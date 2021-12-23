@@ -16,6 +16,9 @@ public interface IOrderDetailRepository extends JpaRepository<OrderDetail, Long>
     @Query(value = "select o from OrderDetail o where o.isDeleted = false")
     List<OrderDetail> findAllNotDeleted();
 
+    @Query(value = "select o from OrderDetail o where o.isDeleted = false and o.order.id= ?1")
+    List<OrderDetail> findAllNotDeletedOfOrder(Long id);
+
     @Query("SELECT NEW com.codegym.model.dto.OrderDetailDTO (o.id,o.drinks.name, o.quantity, o.drinks.id, o.order.id,o.drinks.price,o.amount) FROM OrderDetail o WHERE o.isDeleted = false ")
     List<OrderDetailDTO> findAllOrderDetailDTO() ;
 

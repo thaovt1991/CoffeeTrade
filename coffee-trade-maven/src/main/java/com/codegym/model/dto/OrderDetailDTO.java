@@ -32,6 +32,7 @@ public class OrderDetailDTO {
     public OrderDetail toOrderDetail(Drinks drinks, Order order){
         OrderDetail orderDetail = new OrderDetail() ;
         orderDetail.setId(id) ;
+        orderDetail.setQuantity(quantity); ;
         orderDetail.setDrinks(drinks);
         orderDetail.setOrder(order);
         return orderDetail ;
