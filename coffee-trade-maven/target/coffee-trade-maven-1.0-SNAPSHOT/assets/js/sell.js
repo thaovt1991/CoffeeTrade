@@ -6,6 +6,8 @@ let total_money = 0;
 let new_bill = new Bill();
 let new_staff = new Staff();
 
+// let orderDetailArr = [];
+
 // let orderDetail = new OrderDetail();
 
 
@@ -24,9 +26,6 @@ function callStaff(id_staff) {
 }
 
 
-
-
-///////////////////////////////////SELL/////////////////////////////////////
 let clickDesk = function () {
     console.log("desk on click")
     $(".desk").on("click", function () {
@@ -43,13 +42,10 @@ let clickDesk = function () {
             // console.log(desk)
             // $("desk-order").html(desk.name)
             if (desk.empty) {
-                $("#done ,#btn-payment-order").prop("disabled", true);
-                $("#new-order").removeClass("d-none");
-                $("#old-order").addClass("d-none");
+                $("#done ,#btn-payment-order").prop("disabled",true);
                 idDrinksArr = new Array()
                 quantityArr = new Array()
                 drawNewOrderOfDesk()
-                // drawDeskEmpty()
                 drawDeskChecked(idDesk);
                 // $("#select_desk").html(idDesk);
                 $("#name-desk").html(desk.name);
@@ -58,16 +54,19 @@ let clickDesk = function () {
                 let time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
                 $("#time-order").html(time);
                 $("#day-order").html(day);
+                $("#new-order").removeClass("d-none");
 
-                addOrder();
+                $("#new-order").removeClass("d-none");
+                $("#old-order").addClass("d-none");
+                // addOrder();
                 // clickDesk();
             } else {
                 getOrderDetailOfDesk(desk.id)
                 drawOrderNotPayment(desk.id)
                 $("#old-order").removeClass("d-none");
                 $("#new-order").addClass("d-none");
-                $("#btn-payment-order").prop("disabled", false);
-                $("#btn-edit-order").prop("disabled", true);
+                $("#btn-payment-order").prop("disabled",false);
+                $("#btn-edit-order").prop("disabled",true);
 
             }
         })
@@ -86,17 +85,20 @@ addOrder = function () {
             url: `/api/desk/${idDesk}`
         }).done(function (desk) {
             // console.log(desk)
-            console.log(quantityArr)
             console.log(idDrinksArr)
             createOrder(desk).then(function () {
-                updateDesk(desk, false).then(function () {
+                updateDesk(desk,false).then(function () {
                     drawDeskAll().then(function () {
+                        // drawDeskNotEmpty().then(function (){
                         clickDesk();
                         // })
                     });
+                    // clickDesk();
                 });
             });
 
+            // drawDeskAll();
+            // drawDeskNotEmpty();
             backOrderDesk();
             alert("Success create order")
 
@@ -106,6 +108,7 @@ addOrder = function () {
 
     })
 }
+
 
 
 $(".add-drinks-to-order").on("click", function () {
@@ -186,9 +189,20 @@ createOrder = function (desk) {
     }).done(function (orderResp) {
         console.log(orderResp);
         for (let i = 0; i < idDrinksArr.length; i++) {
+
+            // let orrderDetailDTO = {
+            //     id_drink: idDrinksArr[i],
+            //     id_order: orderResp.id,
+            //     quantity: quantityArr[i]
+            // }
+            // orderDetailArr.push(orrderDetailDTO);
+
             crateOrderDetail(orderResp.id, idDrinksArr[i])
         }
 
+        // crateOrderDetail(orderResp.id, orderDetailArr)
+
+        // orderDetailArr = new Array();
 
         idDrinksArr = new Array()
         quantityArr = new Array()
@@ -220,11 +234,13 @@ function crateOrderDetail(idOrder, idDrinks) {
     // let quantity = $("#quantity_" + idDrinks).val()
     let quantity = quantityArr[idDrinksArr.indexOf(idDrinks)];
     console.log(quantity)
+
     let orrderDetailDTO = {
         id_drink: idDrinks,
         id_order: idOrder,
         quantity: quantity,
     }
+
     $.ajax({
         headers: {
             'Accept': 'application/json',
@@ -353,7 +369,6 @@ $("#btn-edit-order").on("click", function () {
 
 })
 
-// }
 
 
 function drawOrderNotPayment(desk_id) {
@@ -369,7 +384,6 @@ function drawOrderNotPayment(desk_id) {
                     <input type="hidden" id="name_desk_order" value="${orderDto.nameDesk}">
                     <input type="hidden" id="time_begin" value="${orderDto.createAtTime} - ${orderDto.createAtDay}">
                      <input type="hidden" id="idStaffOrder" value="${orderDto.idStaff}">
-               
                   `
         $("#select_desk").html(str)
         $("#time-order").html(orderDto.createAtTime);
@@ -377,20 +391,9 @@ function drawOrderNotPayment(desk_id) {
     })
 }
 
-function callStaff(id_staff) {
-    $.ajax({
-        type: "GET",
-        url: `/api/staff/${id_staff}`
-    }).done(function (staff) {
-        new_staff = {
-            idStaff: staff.id,
-            nameStaff: staff.fullName,
-        }
-    })
-}
 
 $("#btn-payment-order").on("click", function () {
-    callStaff($("#idStaffOrder").val())
+    // callStaff($("#idStaffOrder").val())
     console.log(new_staff)
     new_bill.idOrderBill = $("#id_order").val();
     new_bill.nameDesk = $("#name_desk_order").val();
@@ -467,8 +470,7 @@ $("#cancel-order").on("click", function () {
     $("#list-desk-not-empty").removeClass("d-none");
     $(".add-drinks-to-order").addClass("d-none")
 
-})
-
+});
 
 function backOrderDesk() {
     drawNewOrderOfDesk()
@@ -481,27 +483,29 @@ function backOrderDesk() {
 }
 
 function drawNewOrderOfDesk() {
-    $("#tbListOrderDetails").html(` <thead>
- 
-                    <tr>
-                        <th>STT</th>
-                        <th>Tên thức uống</th>
-                        <th>Số lượng</th>
-                        <th>Đơn giá</th>
-                        <th>Thành tiền (VND)</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    <tfoot>
-                    <tr style="font-weight: bolder">
-                        <td colspan="4">Tổng tiền :</td>
-                        <td id="total_money" >0 VND</td>
-                        <input type="hidden" id="total_money_order">
-                    </tr>
-                    </tfoot>`);
+    $("#tbListOrderDetails").html(` 
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Tên thức uống</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Thành tiền (VND)</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr style="font-weight: bolder">
+                <td colspan="4">Tổng tiền :</td>
+                <td id="total_money" >0 VND</td>
+                <input type="hidden" id="total_money_order">
+            </tr>
+            </tfoot>`);
 
 }
 
 
 clickDesk();
+
+addOrder();

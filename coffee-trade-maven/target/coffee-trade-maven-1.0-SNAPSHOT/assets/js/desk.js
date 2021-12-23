@@ -64,7 +64,7 @@ function drawDeskAll() {
 }
 
 function drawDeskNotEmpty(){
-     $.ajax({
+     return $.ajax({
          type: "GET" ,
          url: `/api/desk/getalldesknotempty`
      }).done(function (listdesk){
@@ -76,7 +76,6 @@ function drawDeskNotEmpty(){
                         </div>`
         }
          $("#list-desk-not-empty").html(str) ;
-
     });
 }
 

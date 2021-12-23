@@ -31,7 +31,7 @@ public class OrderDetailControllerAPI {
     public IDrinksService drinksService ;
 
     @PostMapping("/create")
-    public OrderDetail createOderDetails(@RequestBody OrderDetailDTO orderDetailDTO){
+    public void createOderDetails(@RequestBody OrderDetailDTO orderDetailDTO){
         OrderDetail orderDetail = new OrderDetail() ;
         Order order = orderService.findById(orderDetailDTO.getId_order()).get();
         Drinks drinks = drinksService.findById(orderDetailDTO.getId_drink()).get();
@@ -40,7 +40,12 @@ public class OrderDetailControllerAPI {
         orderDetail.setDrinks(drinks);
         BigDecimal amountDTO = drinks.getPrice().multiply(BigDecimal.valueOf(orderDetailDTO.getQuantity()));
         orderDetail.setAmount(orderDetailDTO.getAmount());
-        return orderDetailService.save(orderDetail) ;
+        orderDetailService.save(orderDetail) ;
+
+//        for (int i = 0; i < orderDetailDTO.length; i++) {
+//
+//        }
+
     }
 
     @PutMapping("/update")
